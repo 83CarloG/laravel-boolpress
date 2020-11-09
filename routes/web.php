@@ -29,3 +29,10 @@ Route::prefix('admin')
     });
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::prefix('guest')
+    ->name('guest.')
+    ->namespace('Guest')
+    ->group(function () {
+        Route::resource('posts', 'PostController');
+    });
