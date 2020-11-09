@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Post;
 use App\User;
 use Faker\Provider\Lorem;
+use Illuminate\Validation\Rule;
 
 class PostController extends Controller
 {
@@ -79,9 +80,10 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $data = Post::find($id);
+        $post = Post::find($id);
         $users = User::all();
-        return view('admin.edit', compact('data'));
+
+        return view('admin.edit', compact('post', 'users'));
     }
 
     /**
@@ -93,7 +95,26 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $data = $request->all();
+        $request->validate([
+
+            'user_id' => 'required|exists:users,id',
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'excerpt' => 'required',
+            'published' => 'boolean',
+            'slug' => [
+                'required',
+                Rule::unique('posts')->ignore($id)
+            ]
+        ]);
+
+        $post = Post::findOrFail($id);
+
+        $post->fill($data)->update();
+
+        return redirect('admin/posts');
     }
 
     /**
@@ -104,6 +125,10 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+
+        $post->delete();
+
+        return redirect('admin/posts');
     }
 }
