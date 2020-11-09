@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Post;
+use App\User;
+use Faker\Provider\Lorem;
 
 class PostController extends Controller
 {
@@ -17,7 +19,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('index');
+        $posts = Post::all();
+        return view('admin.index', compact('posts'));
     }
 
     /**
@@ -27,7 +30,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        return view('admin.create', compact('users'));
     }
 
     /**
@@ -38,7 +42,22 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $request->validate([
+
+            'user_id' => 'required|exists:users,id',
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'excerpt' => 'required',
+            'published' => 'boolean',
+            'slug' => 'required|unique:posts'
+        ]);
+        $newPost = new Post;
+        $newPost->fill($data);
+
+        $newPost->save();
+
+        return redirect('admin/posts');
     }
 
     /**
@@ -60,7 +79,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        $data = Post::find($id);
+        $users = User::all();
+        return view('admin.edit', compact('data'));
     }
 
     /**
