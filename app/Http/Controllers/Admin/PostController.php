@@ -3,13 +3,13 @@
 namespace app\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Storage;
 
 use App\Post;
 use App\User;
-use Faker\Provider\Lorem;
-use Illuminate\Validation\Rule;
+
 
 class PostController extends Controller
 {
@@ -51,10 +51,16 @@ class PostController extends Controller
             'content' => 'required',
             'excerpt' => 'required',
             'published' => 'boolean',
-            'slug' => 'required|unique:posts'
+            'slug' => 'required|unique:posts',
+            'image' => 'image'
         ]);
+
+        $path = Storage::disk('public')->put('images', $data['image']);
+
+
         $newPost = new Post;
         $newPost->fill($data);
+        $newPost->image = $path;
 
         $newPost->save();
 

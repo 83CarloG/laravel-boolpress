@@ -3,7 +3,7 @@
 
 @section('page-content')
     <main>
-        <form method="POST" action="{{ route('admin.posts.store'), $post->id }}">
+        <form method="POST" action="{{ route('admin.posts.store') }}" enctype="multipart/form-data">
             @csrf
             @method('POST')
             <div class="form-group">
@@ -27,14 +27,23 @@
                 <div class="input-group-prepend">
                     <label class="input-group-text" for="author">Autori</label>
                 </div>
-                    <select name="user_id" class="custom-select" id="author">
-                        <option selected>Scegli...</option>
-                        @foreach ($users as $user)
-                        <option required value="{{ $user->id }}" {{ old('user_id') == $user->id ?  'selected' : ''}}>
-                        {{  $user->name }}</option>
-                        @endforeach
-                    </select>
+                <select name="user_id" class="custom-select" id="author">
+                    <option selected>Scegli...</option>
+                    @foreach ($users as $user)
+                    <option required value="{{ $user->id }}" {{ old('user_id') == $user->id ?  'selected' : ''}}>
+                    {{  $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
                 </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
+                    <label class="custom-file-label" for="image">Choose file</label>
+                </div>
+            </div>
             <div class="form-group">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="published" id="published" value= "1" {{ old('published') ? 'checked' : '' }} >

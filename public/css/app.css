@@ -9980,6 +9980,10 @@ main {
   flex: 1;
 }
 
+a {
+  color: #ffffff;
+}
+
 .author__select {
   width: 60%;
 }
