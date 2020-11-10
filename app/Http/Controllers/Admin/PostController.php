@@ -113,10 +113,14 @@ class PostController extends Controller
             'slug' => [
                 'required',
                 Rule::unique('posts')->ignore($id)
-            ]
+            ],
+            'image' => 'image'
+
         ]);
 
+        $path = Storage::disk('public')->put('images', $data['image']);
         $post = Post::findOrFail($id);
+        $post->image = $path;
 
         $post->fill($data)->update();
 

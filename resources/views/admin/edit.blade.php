@@ -3,7 +3,7 @@
 
 @section('page-content')
     <main>
-        <form method="POST" action="{{ route('admin.posts.update', $post->id) }}">
+        <form method="POST" action="{{ route('admin.posts.update', $post->id)}}"  enctype="multipart/form-data">
 
             @csrf
             @method('PUT')
@@ -39,6 +39,15 @@
                         @endforeach
                     </select>
                 </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Upload</span>
+                </div>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
+                    <label class="custom-file-label" for="image">Choose file</label>
+                </div>
+            </div>
             <div class="form-group">
                 <div class="form-check">
                     @php
