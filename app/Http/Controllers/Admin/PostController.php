@@ -21,7 +21,9 @@ class PostController extends Controller
      */
     public function index()
     {
+
         $posts = Post::all();
+
         return view('admin.index', compact('posts'));
     }
 
@@ -75,7 +77,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::find($id);
     }
 
     /**
@@ -150,13 +152,14 @@ class PostController extends Controller
 
     public function search(Request $request)
     {
-
+        $request->validate([
+            'search' => 'required|min:3'
+        ]);
         // Get the search value from the request
         $search = $request->input('search');
 
         $posts = Post::query()
             ->where('title', 'LIKE', "%{$search}%")
-            ->orWhere('content', 'LIKE', "%{$search}%")
             ->get();
 
         return view('admin.search', compact('posts'));

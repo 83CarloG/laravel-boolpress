@@ -11,6 +11,7 @@
             <th scope="col">Autore</th>
             <th scope="col">Image</th>
             <th scope="col">Azioni</th>
+            <th scope=col>Tags</th>
         </tr>
     </thead>
     <tbody>
@@ -21,12 +22,19 @@
             <td>{{ $post->excerpt }}</td>
             <td> <i>{{ $post->user->name }}</i></td>
             <td>
-                <img src="{{ $post->user->name }}" alt="">
-                {{-- @if ($post->published)
+                <ul style="list-style: none">
+                    @foreach ($post->tags as $tag)
+                        <li>#{{ $tag->name }}</li>
+                    @endforeach
+                </ul>
+            </td>
+            <td>
+                {{-- <img src="{{ $post->user->name }}" alt=""> --}}
+                @if ($post->published)
                 <span class="badge badge-success">SI</span>
                 @else
                 <span class="badge badge-danger">NO</span>
-                @endif --}}
+                @endif
             </td>
             <td><span class="badge badge-{{ empty($post->image) ? 'danger' : 'success' }}">{{ empty($post->image) ? 'NO' : 'SI' }}</span></td>
             <td>
@@ -44,8 +52,17 @@
     </table>
     <form action="{{ route('admin.search') }}" method="GET">
         <input type="text" name="search" required/>
-        <button type="submit">Search</button>
+        <button type="submit">Cerca Post</button>
     </form>
 
+            @if ($errors->any())
+                <div class="alert alert-danger mt-2">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 @endsection
 
