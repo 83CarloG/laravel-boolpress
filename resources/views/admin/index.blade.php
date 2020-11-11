@@ -42,6 +42,10 @@
         @endforeach
       </tbody>
     </table>
+    <form action="{{ route('admin.search') }}" method="GET">
+        <input type="text" name="search" required/>
+        <button type="submit">Search</button>
+    </form>
 
 @endsection
 

@@ -135,15 +135,30 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-
         $post = Post::find($id);
         $post->image;
         if (Storage::disk('public')->exists($post->image)) {
             Storage::disk('public')->delete([$post->image]);
         };
-
+        // Return the search view with the resluts compacted
+        return view('search', compact('posts'));
         $post->delete();
 
         return redirect('admin/posts');
+    }
+
+
+    public function search(Request $request)
+    {
+
+        // Get the search value from the request
+        $search = $request->input('search');
+
+        $posts = Post::query()
+            ->where('title', 'LIKE', "%{$search}%")
+            ->orWhere('content', 'LIKE', "%{$search}%")
+            ->get();
+
+        return view('admin.search', compact('posts'));
     }
 }
