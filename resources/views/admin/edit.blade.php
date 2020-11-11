@@ -44,7 +44,7 @@
                     <span class="input-group-text">Upload</span>
                 </div>
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
+                    <input type="file" class="custom-file-input" name="image" id="image" accept="image/*" value="{{ $post->image }}" required>
                     <label class="custom-file-label" for="image">Choose file</label>
                 </div>
             </div>

@@ -11,6 +11,7 @@ use App\Post;
 use App\User;
 
 
+
 class PostController extends Controller
 {
     /**
@@ -52,7 +53,7 @@ class PostController extends Controller
             'excerpt' => 'required',
             'published' => 'boolean',
             'slug' => 'required|unique:posts',
-            'image' => 'image'
+            'image' => 'image|required'
         ]);
 
         $path = Storage::disk('public')->put('images', $data['image']);
@@ -61,7 +62,6 @@ class PostController extends Controller
         $newPost = new Post;
         $newPost->fill($data);
         $newPost->image = $path;
-
         $newPost->save();
 
         return redirect('admin/posts');
@@ -114,7 +114,8 @@ class PostController extends Controller
                 'required',
                 Rule::unique('posts')->ignore($id)
             ],
-            'image' => 'image'
+            'image' => 'image|required'
+
 
         ]);
 
@@ -123,7 +124,6 @@ class PostController extends Controller
         $post->image = $path;
 
         $post->fill($data)->update();
-
         return redirect('admin/posts');
     }
 
@@ -135,7 +135,12 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+
         $post = Post::find($id);
+        $post->image;
+        if (Storage::disk('public')->exists($post->image)) {
+            Storage::disk('public')->delete([$post->image]);
+        };
 
         $post->delete();
 
