@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 use App\Post;
 use App\User;
-
-
+use App\Tag;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -35,7 +35,9 @@ class PostController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('admin.create', compact('users'));
+        $tags = Tag::all();
+
+        return view('admin.create',  compact('users', 'tags'));
     }
 
     /**
@@ -55,7 +57,8 @@ class PostController extends Controller
             'excerpt' => 'required',
             'published' => 'boolean',
             'slug' => 'required|unique:posts',
-            'image' => 'image|required'
+            'image' => 'image|required',
+            'tags' => 'required'
         ]);
 
         $path = Storage::disk('public')->put('images', $data['image']);
@@ -64,7 +67,12 @@ class PostController extends Controller
         $newPost = new Post;
         $newPost->fill($data);
         $newPost->image = $path;
+        $newPost->slug = Str::of($newPost->slug)->slug('-');
         $newPost->save();
+        if (count($data['tags']) > 0) {
+            $newPost->tags()->sync($data['tags']);
+        }
+
 
         return redirect('admin/posts');
     }
@@ -90,8 +98,10 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $users = User::all();
+        $tags = Tag::all();
 
-        return view('admin.edit', compact('post', 'users'));
+
+        return view('admin.edit', compact('post', 'users', 'tags'));
     }
 
     /**
@@ -116,16 +126,19 @@ class PostController extends Controller
                 'required',
                 Rule::unique('posts')->ignore($id)
             ],
-            'image' => 'image|required'
-
+            'image' => 'image|required',
+            'tags' => 'required'
 
         ]);
 
         $path = Storage::disk('public')->put('images', $data['image']);
         $post = Post::findOrFail($id);
         $post->image = $path;
-
+        $post->slug = Str::of($post->slug)->slug('-');
         $post->fill($data)->update();
+        if (count($data['tags']) > 0) {
+            $post->tags()->sync($data['tags']);
+        }
         return redirect('admin/posts');
     }
 
@@ -137,14 +150,15 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
+
         $post = Post::find($id);
-        $post->image;
         if (Storage::disk('public')->exists($post->image)) {
             Storage::disk('public')->delete([$post->image]);
         };
-        // Return the search view with the resluts compacted
-        return view('search', compact('posts'));
+
+        $post->tags()->detach();
         $post->delete();
+
 
         return redirect('admin/posts');
     }

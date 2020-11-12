@@ -17,6 +17,7 @@ class CreatePostTagTable extends Migration
             //Tabella pivot, relazione many-to-many users and posts table
             $table->unsignedBigInteger('post_id');
             $table->foreign('post_id')->references('id')->on('posts');
+
             $table->unsignedBigInteger('tag_id');
             $table->foreign('tag_id')->references('id')->on('tags');
         });

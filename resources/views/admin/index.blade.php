@@ -7,11 +7,11 @@
             <th scope="col">Titolo</th>
             <th scope="col">Slug</th>
             <th scope="col">Riassunto</th>
-            <th scope="col">Pubblicato</th>
             <th scope="col">Autore</th>
+            <th scope=col>Tags</th>
+            <th scope="col">Pubblicato</th>
             <th scope="col">Image</th>
             <th scope="col">Azioni</th>
-            <th scope=col>Tags</th>
         </tr>
     </thead>
     <tbody>
@@ -24,7 +24,7 @@
             <td>
                 <ul style="list-style: none">
                     @foreach ($post->tags as $tag)
-                        <li>#{{ $tag->name }}</li>
+                        <li>{{ $tag->name }}</li>
                     @endforeach
                 </ul>
             </td>

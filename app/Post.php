@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['tags'];
     // Relazioni
     public function user()
     {

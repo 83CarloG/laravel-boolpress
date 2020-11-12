@@ -44,15 +44,21 @@
                     <label class="custom-file-label" for="image">Choose file</label>
                 </div>
             </div>
-            <div class="form-group">
+            @foreach ($tags as $tag)
+                <div class="form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" name="tags[]" id="genre-{{ $tag->id }}" value="{{ $tag->id }}">
+                <label class="form-check-label" for="genre-{{ $tag->id }}">{{ $tag->name }}</label>
+                </div>
+            @endforeach
+            <div class="form-group mt-3">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="published" id="published" value= "1" {{ old('published') ? 'checked' : '' }} >
                     <label class="form-check-labe" for="published">Pubblicato</label>
                 </div>
             </div>
-
+            <div class="form-group">
             <button type="submit" class="btn btn-primary">Salva</button>
-
+            </div>
             @if ($errors->any())
                 <div class="alert alert-danger mt-2">
                     <ul>
