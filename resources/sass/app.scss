@@ -7,11 +7,13 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
-// Common
-@import 'common';
+//sb-admin
+@import '~startbootstrap-sb-admin-2/scss/sb-admin-2.scss';
+@import '~startbootstrap-sb-admin-2/css/sb-admin-2.min.css';
+@import '~startbootstrap-sb-admin-2/vendor/fontawesome-free/scss/fontawesome.scss';
 
-// Header
-@import 'footer';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
 
-// Create
-@import 'create';

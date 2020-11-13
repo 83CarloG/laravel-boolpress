@@ -2,9 +2,6 @@
 @extends('layouts.main')
 
 @section('page-content')
-
-
-
     <main>
         <form method="POST" action="{{ route('admin.posts.update', $post->id)}}"  enctype="multipart/form-data">
 
@@ -53,7 +50,7 @@
             </div>
             @foreach ($tags as $tag)
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="tags[]" id="genre-{{ $tag->id }}" value="{{ $tag->id }}" {{ $tagsChecked }}>
+                    <input class="form-check-input" type="checkbox" name="tags[]" id="genre-{{ $tag->id }}" value="{{ $tag->id }}">
                     <label class="form-check-label" for="genre-{{ $tag->id }}">{{ $tag->name }}</label>
                 </div>
             @endforeach
